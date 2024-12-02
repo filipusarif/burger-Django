@@ -1,4 +1,5 @@
 from django.http import HttpResponseForbidden
+from django.shortcuts import  redirect
 
 def role_required(allowed_roles):
     def decorator(view_func):

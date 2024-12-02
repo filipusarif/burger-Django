@@ -2,16 +2,16 @@
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         {% if is_owner %}
-        <a class="navbar-brand brand-logo"><img
-                src="{% static 'assets/images/logovelos.png' %}" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" ><img
-                src="{% static 'assets/images/logominifix.png' %}" alt="logo" /></a>
+        <a class="navbar-brand brand-logo" href="{% url 'dashboard' %}"><img
+                src="{% static 'assets/images/bunnfun.png' %}" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="{% url 'dashboard' %}"><img
+                src="{% static 'assets/images/bunnfun_minifix.png' %}" alt="logo" /></a>
         {% endif %}
         {% if is_chef or is_cashier %}
-        <!-- <a class="navbar-brand brand-logo" href="{% url 'read_pemesanan' %}"><img
-                src="{% static 'assets/images/logovelos.png' %}" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href="{% url 'read_pemesanan' %}"><img
-                src="{% static 'assets/images/logominifix.png' %}" alt="logo" /></a> -->
+        <a class="navbar-brand brand-logo" href="{% url 'pemesanan' %}"><img
+                src="{% static 'assets/images/bunnfun.png' %}" alt="logo" /></a>
+        <a class="navbar-brand brand-logo-mini" href="{% url 'pemesanan' %}"><img
+                src="{% static 'assets/images/bunnfun_minifix.png' %}" alt="logo" /></a>
         {% endif %}
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-stretch">
@@ -23,18 +23,26 @@
                 <a class="nav-link dropdown-toggle" id="profileDropdown" href="{% static '#' %}"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="nav-profile-img">
+                        {% if is_owner %}
+                        <img src="https://simplegrillrecipes.com/wp-content/uploads/2021/07/best-bins-for-burgers-1-768x768.jpg" alt="image">
+                        {% endif %}
+                        {% if is_cashier %}
                         <img src="https://th.bing.com/th/id/OIP.yWv7kjE4crcPq3dRXI72ywAAAA?rs=1&pid=ImgDetMain" alt="image">
+                        {% endif %}
+                        {% if is_chef %}
+                        <img src="https://loukinenson4th.com/wp-content/uploads/2019/07/AdobeStock_109909275-1024x674.jpeg" alt="image">
+                        {% endif %}
                         <span class="availability-status online"></span>
                     </div>
                     <div class="nav-profile-text">
                         {% if is_owner %}
-                        <p class="mb-1 text-black">Owner Travelosik</p>
+                        <p class="mb-1 text-black">Owner Bun N Fun</p>
                         {% endif %}
-                        {% if is_admin %}
-                        <p class="mb-1 text-black">Admin Travelosik</p>
+                        {% if is_cashier %}
+                        <p class="mb-1 text-black">Kasir Bun N Fun</p>
                         {% endif %}
-                        {% if is_petugas %}
-                        <p class="mb-1 text-black">Petugas Travelosik</p>
+                        {% if is_chef %}
+                        <p class="mb-1 text-black">Chef Bun N Fun</p>
                         {% endif %}
                     </div>
                 </a>

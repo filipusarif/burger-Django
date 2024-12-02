@@ -4,25 +4,37 @@
         <li class="nav-item nav-profile">
             <a class="nav-link">
                 <div class="nav-profile-image">
+                    {% if is_owner %}
+                    <img src="https://simplegrillrecipes.com/wp-content/uploads/2021/07/best-bins-for-burgers-1-768x768.jpg"
+                    alt="profile">
+                    {% endif %}
+                    {% if is_cashier %}
                     <img src="https://th.bing.com/th/id/OIP.yWv7kjE4crcPq3dRXI72ywAAAA?rs=1&pid=ImgDetMain"
-                        alt="profile">
+                    alt="profile">
+                    {% endif %}
+                    {% if is_chef %}
+                    <img src="https://loukinenson4th.com/wp-content/uploads/2019/07/AdobeStock_109909275-1024x674.jpeg"
+                    alt="profile">
+                    {% endif %}
                     <span class="login-status online"></span>
+                    
                     <!--change to offline or busy as needed-->
                 </div>
                 <div class="nav-profile-text d-flex flex-column">
                     {% if is_owner %}
-                    <span class="font-weight-bold mb-2">Owner Bun n Fun</span>
+                    <span class="font-weight-bold mb-2">Owner Bun N Fun</span>
                     {% endif %}
                     {% if is_cashier %}
-                    <span class="font-weight-bold mb-2">Cashier Bun n Fun</span>
+                    <span class="font-weight-bold mb-2">Cashier Bun N Fun</span>
                     {% endif %}
                     {% if is_chef %}
-                    <span class="font-weight-bold mb-2">Chef Bun n Fun</span>
+                    <span class="font-weight-bold mb-2">Chef Bun N Fun</span>
                     {% endif %}
                 </div>
                 <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
             </a>
         </li>
+
         {% if is_owner %}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'dashboard' %}">
@@ -31,14 +43,14 @@
             </a>
         </li>
         {% endif %}
-        {% if is_owner or is_cashier %}
+        
         <li class="nav-item">
             <a class="nav-link" href="{% url 'burger' %}">
                 <span class="menu-title">Burger</span>
                 <i class="mdi mdi-nature-people menu-icon"></i>
             </a>
         </li>
-        {% endif %}
+        
         {% if is_owner or is_cashier %}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'pelanggan' %}">

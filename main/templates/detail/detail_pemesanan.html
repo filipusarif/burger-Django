@@ -1,4 +1,6 @@
 {% load static %}
+{% load humanize %} 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +22,9 @@
         <!-- Header -->
         <div class="row text-center mb-3">
             <div class="col">
-                <h5 class="fw-bold">Burger Bun n Fun</h5>
+                <h5 class="fw-bold">Burger Bun N Fun</h5>
                 <p class="mb-0">Jl. Kembang Mlati No. 123</p>
-                <p class="mb-0">JAKARTA</p>
+                <p class="mb-0">Malang, Jawa Timur</p>
             </div>
         </div>
 
@@ -32,7 +34,7 @@
                 <p><strong>Nomor:</strong> {{ detail.pemesanan.id }}</p>
             </div>
             <div class="col-6 text-end">
-                <p><strong>Tanggal:</strong> {{ detail.pemesanan.tanggal_pemesanan|date:"d F Y" }}</p>
+                <p><strong>Tanggal:</strong> {{ detail.pemesanan.created_at|date:"d F Y" }}</p>
             </div>
         </div>
 
@@ -60,15 +62,15 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ burger.nama }}</td>
                     <td>1</td> <!-- Ganti dengan jumlah jika ada field jumlah -->
-                    <td>Rp {{ burger.harga }}</td>
-                    <td>Rp {{ burger.harga }}</td>
+                    <td>Rp.{{ burger.harga|intcomma }}</td>
+                    <td>Rp.{{ burger.harga|intcomma }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan="4" class="text-end fw-bold">TOTAL</td>
-                    <td class="fw-bold">Rp {{ detail.pemesanan.total_harga }}</td>
+                    <td class="fw-bold">Rp.{{ detail.pemesanan.total_harga|intcomma }}</td>
                 </tr>
             </tfoot>
         </table>
@@ -78,15 +80,17 @@
             <div class="col-6 text-center">
                 <p class="fw-bold">BAGIAN AKUNTANSI</p>
                 <br />
-                <p>(........................)</p>
+                <p>( Ahmad Abdul Syukur )</p>
             </div>
             <div class="col-6 text-center">
                 <p class="fw-bold">BAGIAN PENJUALAN</p>
                 <br />
-                <p>(........................)</p>
+                <p>( Suryani )</p>
             </div>
         </div>
-        <button class="btn btn-primary btn-sm mt-3" onclick="printNota()">Print Nota</button>
+    </div>
+    <div class="w-100 d-flex justify-content-center align-items-center mt-4">
+        <button class="btn btn-gradient-success mx-auto" onclick="printNota()"><i class="mdi mdi-printer"></i> Print</button>
     </div>
 
     <!-- Tombol Print -->

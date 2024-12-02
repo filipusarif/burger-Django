@@ -1,11 +1,12 @@
 {% load static %}
+{% load humanize %} 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nota</title>
+    <title>Laporan Pemasukan</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}">
@@ -16,84 +17,43 @@
 </head>
 
 <body>
-    <div id="nota-detail" class="print-area container border p-4" style="max-width: 210mm;">
-        <!-- Header -->
-        <div class="row text-center mb-3">
-            <div class="col">
-                <h5 class="fw-bold">Burger Bun n Fun</h5>
-                <p class="mb-0">Jl. Kembang Mlati No. 123</p>
-                <p class="mb-0">JAKARTA</p>
-            </div>
+    <div class="container" id="laporan">
+        {% if burger_pemasukan %}
+        <h1 class="text-center mt-4">Laporan Pemasukan</h1>
+        <h5 class="card-title text-center">Laporan Pemasukan dari {{ tanggal_mulai }} sampai {{ tanggal_akhir }}</h5>
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered text-center">
+                <thead style="background-color: rgb(216, 216, 216)">
+                    <tr>
+                        <th>Burger ID</th>
+                        <th>Total Pemasukan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in burger_pemasukan.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>Rp.{{ value.total_pemasukan|intcomma }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-
-        <!-- Informasi Nota -->
-        <div class="row mb-3">
-            <div class="col-6">
-                <p><strong>Nomor:</strong> {{ detail.pemesanan.id }}</p>
-            </div>
-            <div class="col-6 text-end">
-                <p><strong>Tanggal:</strong> {{ detail.pemesanan.tanggal_pemesanan|date:"d F Y" }}</p>
-            </div>
-        </div>
-
-        <!-- Judul Nota -->
-        <div class="row text-center mb-3">
-            <div class="col">
-                <h6 class="fw-bold text-uppercase">Nota Kontan</h6>
-            </div>
-        </div>
-
-        <!-- Tabel Pesanan -->
-        <table class="table table-bordered table-sm">
-            <thead class="table-secondary">
-                <tr>
-                    <th style="width: 5%;">No.</th>
-                    <th style="width: 40%;">Nama Barang</th>
-                    <th style="width: 15%;">Jumlah</th>
-                    <th style="width: 20%;">Harga Satuan</th>
-                    <th style="width: 20%;">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for burger in detail.pemesanan.burger.all %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ burger.nama }}</td>
-                    <td>1</td> <!-- Ganti dengan jumlah jika ada field jumlah -->
-                    <td>Rp {{ burger.harga }}</td>
-                    <td>Rp {{ burger.harga }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="4" class="text-end fw-bold">TOTAL</td>
-                    <td class="fw-bold">Rp {{ detail.pemesanan.total_harga }}</td>
-                </tr>
-            </tfoot>
-        </table>
-
-        <!-- Tanda Tangan -->
-        <div class="row mt-4">
-            <div class="col-6 text-center">
-                <p class="fw-bold">BAGIAN AKUNTANSI</p>
-                <br />
-                <p>(........................)</p>
-            </div>
-            <div class="col-6 text-center">
-                <p class="fw-bold">BAGIAN PENJUALAN</p>
-                <br />
-                <p>(........................)</p>
-            </div>
-        </div>
-        <button class="btn btn-primary btn-sm mt-3" onclick="printNota()">Print Nota</button>
+        <h5 class="text-right mt-4">Grand Total Pemasukan: Rp {{ grand_total_pemasukan|intcomma }}</h5>
+        {% else %}
+        <p class="text-center">Tidak ada data yang ditemukan untuk rentang tanggal yang dipilih.</p>
+        {% endif %}
     </div>
+    <div class="w-100 d-flex justify-content-center align-items-center mt-4">
+        <button class="btn btn-gradient-success mx-auto" onclick="printNota()"><i class="mdi mdi-printer"></i> Print</button>
+    </div>
+
 
     <!-- Tombol Print -->
 
     <script>
         function printNota() {
-            var printContent = document.getElementById("nota-detail").innerHTML;
+            var printContent = document.getElementById("laporan").innerHTML;
             var originalContent = document.body.innerHTML;
             document.body.innerHTML = printContent;
             window.print();

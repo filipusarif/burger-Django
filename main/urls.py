@@ -31,7 +31,6 @@ urlpatterns = [
 
     # orders
     path('nota/<int:id>/', views.detail_pemesanan_view, name='detail_pemesanan_view'),
-    path('receipt/<int:order_id>/', views.order_receipt, name='order_receipt'),
 
     # reports
     path('view/', views.view_laporan, name='view_laporan'),

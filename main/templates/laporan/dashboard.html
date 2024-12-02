@@ -1,21 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% block content %}
-
 <div class="page-header">
     <h3 class="page-title">
-        <span class="page-title-icon bg-gradient-primary text-white me-2">
+        <span class="page-title-icon btn-gradient-success text-white me-2">
             <i class="mdi mdi-home"></i>
         </span> Dashboard
     </h3>
-    <nav aria-label="breadcrumb">
-        <ul class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">
-                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
-            </li>
-        </ul>
-    </nav>
 </div>
+
 <div class="row">
     <div class="col-md-4 stretch-card grid-margin">
         <div class="card bg-gradient-danger card-img-holder text-white">
@@ -25,7 +19,7 @@
                 <h4 class="font-weight-normal mb-3">Total Penjualan <i
                         class="mdi mdi-chart-line mdi-24px float-right"></i>
                 </h4>
-                <h2 class="mb-5">Rp.{{ total_penjualan }}</h2>
+                <h2 class="mb-5">Rp.{{ total_penjualan|intcomma }}</h2>
             </div>
         </div>
     </div>
@@ -34,10 +28,10 @@
             <div class="card-body">
                 <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute"
                     alt="circle-image" />
-                <h4 class="font-weight-normal mb-3">Rata-rata pesanan perhari <i
+                <h4 class="font-weight-normal mb-3">Rerata pesanan perhari <i
                         class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
                 </h4>
-                <h2 class="mb-5">Rp.{{ pemesanan_per_hari }}</h2>
+                <h2 class="mb-5">Rp.{{ pemesanan_per_hari|intcomma }}</h2>
             </div>
         </div>
     </div>
@@ -53,12 +47,32 @@
         </div>
     </div>
 </div>
+
+
 <div class="row">
     <div class="row">
         <div class="col-lg-10 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title" type="text-center">Pemasukan Tahun 2024</h4>
+                    <div class="row mb-4">
+                        <form method="GET" action="{% url 'dashboard' %}" class="form-group row w-100 " id="yearForm">
+                            <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Pilih Tahun</label>
+                            <div class="col-sm-9">
+                                <input 
+                                type="number" 
+                                name="tahun" 
+                                class="form-control" 
+                                id="exampleInputUsername2" 
+                                placeholder="Masukkan tahun" 
+                                value="{{ selected_year }}"
+                                onchange="document.getElementById('yearForm').submit()">
+                            </div>
+                        </form>
+                        <div class="col-md-4 ">
+                           
+                        </div>
+                    </div>
+                    <h4 class="card-title text-center">Pemasukan Tahun {{ selected_year }}</h4>
                     <canvas id="pemasukan" style="height:250px"></canvas>
                 </div>
             </div>
@@ -91,19 +105,19 @@
 
     const burgerCtx = document.getElementById('kelaslayanan').getContext('2d');
     new Chart(burgerCtx, {
-        type: 'doughnut', // Pilih jenis grafik (misalnya, doughnut)
+        type: 'pie', // Pilih jenis grafik (misalnya, doughnut)
         data: {
             labels: burgerLabels,
             datasets: [{
                 label: 'Pesanan per Menu Burger',
                 data: burgerCounts,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(255, 99, 132)',
+                    'rgba(54, 162, 235)',
+                    'rgba(255, 206, 86)',
+                    'rgba(75, 192, 192)',
+                    'rgba(153, 102, 255)',
+                    'rgba(255, 159, 64)'
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
@@ -131,12 +145,12 @@
                 label: 'Pesanan per Pelanggan',
                 data: pelangganCounts,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(255, 99, 132)',
+                    'rgba(54, 162, 235)',
+                    'rgba(255, 206, 86)',
+                    'rgba(75, 192, 192)',
+                    'rgba(153, 102, 255)',
+                    'rgba(255, 159, 64)'
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
@@ -166,8 +180,22 @@
             datasets: [{
                 label: 'Pemasukan',
                 data: chartData,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: [
+                    'rgba(255, 99, 132)',
+                    'rgba(54, 162, 235)',
+                    'rgba(255, 206, 86)',
+                    'rgba(75, 192, 192)',
+                    'rgba(153, 102, 255)',
+                    'rgba(255, 159, 64)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
                 borderWidth: 1
             }]
         },

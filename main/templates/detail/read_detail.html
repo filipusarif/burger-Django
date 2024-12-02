@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %} 
 {% block content %}
 
 <div class="col-lg-12 grid-margin stretch-card">
@@ -14,8 +15,10 @@
                         <th> Id Pemesanan </th>
                         <th> Id Pelanggan </th>
                         <th> Nama Pelanggan </th>
-                        <th> Pemesanan </th>
+                        <th style="width: 20%;"> Pemesanan </th>
+                        {% if not is_chef %}
                         <th> Aksi </th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -25,14 +28,15 @@
                         <td>{{ detail.pemesanan.id }}</td>
                         <td>{{ detail.pemesanan.pelanggan.id }} </td>
                         <td>{{ detail.pemesanan.pelanggan.nama_pelanggan }} </td>
-                        <td>
+                        <td style="white-space: normal; ">
                             {%  for burger in detail.pemesanan.burger.all %}
-                            <span class="badge bg-secondary">{{ burger.nama }}</span>
+                            <span class="badge bg-secondary mt-1 mb-1">{{ burger.nama }}</span>
                             {% endfor %}
                         </td>
+                        {% if not is_chef %}
                         <td>
                             {% if is_owner %}
-                            <a href="{% url 'detail_pemesanan_view' detail.pk %}" class="btn btn-primary btn-sm" >Print Nota</a>
+                            <a href="{% url 'detail_pemesanan_view' detail.pk %}" class="btn btn-success btn-sm" >Print Nota</a>
                             <a href="{% url 'update_detail' detail.pk %}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{% url 'delete_detail' detail.pk %}" method="post"
                                 style="display:inline;">
@@ -41,9 +45,11 @@
                                     onclick="return confirm('Hapus detail?')">Hapus</button>
                             </form>
                             {% else %}
+                            <a href="{% url 'detail_pemesanan_view' detail.pk %}" class="btn btn-success btn-sm" >Print Nota</a>
                             <a href="{% url 'update_detail' detail.pk %}" class="btn btn-warning btn-sm">Edit</a>
                             {% endif %}
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

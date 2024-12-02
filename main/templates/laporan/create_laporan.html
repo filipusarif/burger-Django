@@ -1,24 +1,25 @@
 {% extends "base.html" %}
+{% load humanize %} 
 {% block content %}
 
 <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Laporan Pemasukan Burgers Fun n Bun</h4>
-            <p class="card-description">Pilih rentang tanggal untuk melihat laporan pemasukan burger Anda</p>
+            <p class="card-description">Pilih rentang tanggal untuk melihat laporan pemasukan Anda</p>
             <!-- Form untuk memilih range tanggal -->
             <form method="POST" class="forms-sample">
                 {% csrf_token %}
                 <div class="form-group row">
                     <label for="tanggal_mulai" class="col-sm-3 col-form-label">Tanggal Mulai</label>
                     <div class="col-sm-9">
-                        <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" value="{{ tanggal_mulai|date:'Y-m-d' }}" required>
+                        <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" value="{{ tanggal_mulai }}" required>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="tanggal_akhir" class="col-sm-3 col-form-label">Tanggal Akhir</label>
                     <div class="col-sm-9">
-                        <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir" value="{{ tanggal_akhir|date:'Y-m-d' }}" required>
+                        <input type="date" class="form-control" id="tanggal_akhir" name="tanggal_akhir" value="{{ tanggal_akhir }}" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -27,6 +28,9 @@
 
                 </div>
             </form>
+            {% if burger_pemasukan %}
+            <h1 class="text-center">Laporan Pemasukan</h1>
+            <h5 class="card-title text-center">Laporan Pemasukan dari {{ tanggal_mulai }} sampai {{ tanggal_akhir }}</h5>
             <!-- Replace Table Sections -->
             <div class="table-responsive">
                 <table class="table table-bordered text-center">
@@ -37,58 +41,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for key, value in bis_pemasukan.items %}
+                        {% for key, value in burger_pemasukan.items %}
                         <tr>
                             <td>{{ key }}</td>
-                            <td>Rp.{{ value.total_pemasukan }}</td>
+                            <td>Rp.{{ value.total_pemasukan|intcomma }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-            <h5 class="text-right">Grand Total Pemasukan: Rp {{ grand_total_pemasukan }}</h5>
-
-            <!-- Add-ons Section -->
-            <h5 class="card-title">Total Setiap Layanan Tambahan yang Dipilih</h5>
-            <div class="table-responsive">
-                <table class="table table-bordered text-center">
-                    <thead style="background-color: rgb(216, 216, 216)">
-                        <tr>
-                            <th>Layanan Tambahan</th>
-                            <th>Total Dipilih</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for layanan, total in total_layanan_tambahan.items %}
-                        <tr>
-                            <td>{{ layanan }}</td>
-                            <td>{{ total }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Meal Classes Section -->
-            <h5 class="card-title">Total Setiap Kelas Layanan yang Dipilih</h5>
-            <div class="table-responsive">
-                <table class="table table-bordered text-center">
-                    <thead style="background-color: rgb(216, 216, 216)">
-                        <tr>
-                            <th>Kategori Menu</th>
-                            <th>Total Dipilih</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for kelas, total in total_kelas_layanan.items %}
-                        <tr>
-                            <td>{{ kelas }}</td>
-                            <td>{{ total }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+            <h5 class="text-right">Grand Total Pemasukan: Rp {{ grand_total_pemasukan|intcomma }}</h5>
 
         </div>
     </div>
@@ -96,9 +58,10 @@
 {% if tanggal_mulai and tanggal_akhir %}
 <form action="{% url 'view_laporan' %}" method="POST" target="_blank">
     {% csrf_token %}
-    <input type="hidden" name="tanggal_mulai" value="{{ tanggal_mulai|date:'Y-m-d' }}">
-    <input type="hidden" name="tanggal_akhir" value="{{ tanggal_akhir|date:'Y-m-d' }}">
+    <input type="hidden" name="tanggal_mulai" value="{{ tanggal_mulai }}">
+    <input type="hidden" name="tanggal_akhir" value="{{ tanggal_akhir }}">
     <button type="submit" class="btn btn-success"><i class="mdi mdi-file-pdf align-middle"></i>Ekspor ke PDF</button>
 </form>
+{% endif %}
 {% endif %}
 {% endblock content %}
