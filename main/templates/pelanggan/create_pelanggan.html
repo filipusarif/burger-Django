@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Add pelanggan</h4>
+        <form class="forms-sample" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputName1">Nama</label>
+                <input type="text" class="form-control" name="nama" id="exampleInputName1"
+                    placeholder="Masukkan Nama pelanggan">
+            </div>
+            <!-- <div class="mb-3">
+                <label for="pesanan" class="form-label">Pesanan</label>
+                <select id="pesanan" name="pesanan" class="form-select" multiple>
+                    {% for burger in burgers %}
+                    <option value="{{ burger.id }}">{{ burger.nama }}</option>
+                    {% endfor %}
+                </select>
+            </div> -->
+
+            <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+            <a class="btn btn-light" href="{% url 'pelanggan' %}" onclick="return confirmCancel()">Cancel</a>
+        </form>
+    </div>
+</div>
+</div>
+<script>
+    function confirmCancel() {
+        return confirm("Are you sure you want to cancel? Your changes will be lost! Take a moment to review your updates.");
+    }
+</script>
+{% endblock %}

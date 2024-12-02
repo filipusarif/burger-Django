@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Data pemesanan</h4>
+            <a href="{% url 'add_pemesanan' %}" type="button" class="btn btn-gradient-primary btn-lg btn-block">
+                <i class="mdi mdi-plus"></i> Add pemesanan </a>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th> Id </th>
+                        <th> Nama pemesanan </th>
+                        <th> Pemesanan </th>
+                        <th> Harga Total </th>
+                        <th> Status Pembayaran </th>
+                        <th> Aksi </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pemesanan in pemesanans %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ pemesanan.pelanggan.nama_pelanggan }}</td>
+                        <td>
+                            {% for burger in pemesanan.burger.all %}
+                            <span class="badge bg-secondary">{{ forloop.counter }}. {{ burger.nama }}</span>
+                            {% endfor %}
+                        </td>
+                        <td>{{ pemesanan.total_harga }}</td>
+                        <td>
+                            {% if pemesanan.status_pembayaran %}
+                                Terbayar
+                            {% else %}
+                                Belum Terbayar
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if is_owner %}
+                            <a href="{% url 'update_pemesanan' pemesanan.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{% url 'delete_pemesanan' pemesanan.pk %}" method="post"
+                                style="display:inline;">
+                                {% csrf_token %}
+                                <button class="btn btn-danger btn-sm" type="submit"
+                                    onclick="return confirm('Hapus pemesanan?')">Hapus</button>
+                            </form>
+                            {% else %}
+                            <a href="{% url 'update_pemesanan' pemesanan.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete?");
+    }
+</script>
+{% endblock %}

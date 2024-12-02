@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="page-header">
+    <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white me-2">
+            <i class="mdi mdi-home"></i>
+        </span> Dashboard
+    </h3>
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">
+                <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div class="row">
+    <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-danger card-img-holder text-white">
+            <div class="card-body">
+                <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute"
+                    alt="circle-image" />
+                <h4 class="font-weight-normal mb-3">Total Penjualan <i
+                        class="mdi mdi-chart-line mdi-24px float-right"></i>
+                </h4>
+                <h2 class="mb-5">Rp.{{ total_penjualan }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-info card-img-holder text-white">
+            <div class="card-body">
+                <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute"
+                    alt="circle-image" />
+                <h4 class="font-weight-normal mb-3">Rata-rata pesanan perhari <i
+                        class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                </h4>
+                <h2 class="mb-5">Rp.{{ pemesanan_per_hari }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-success card-img-holder text-white">
+            <div class="card-body">
+                <img src="{% static 'assets/images/dashboard/circle.svg' %}" class="card-img-absolute"
+                    alt="circle-image" />
+                <h4 class="font-weight-normal mb-3">Total Pelanggan <i class="mdi mdi-diamond mdi-24px float-right"></i>
+                </h4>
+                <h2 class="mb-5">{{ total_pelanggan }} Pelanggan</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="row">
+        <div class="col-lg-10 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" type="text-center">Pemasukan Tahun 2024</h4>
+                    <canvas id="pemasukan" style="height:250px"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-5 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title" type="text-center">Burgers Menu</h1>
+                <canvas id="kelaslayanan" style="height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title" type="text-center">Pelanggan</h4>
+                <canvas id="layanantambahan" style="height:250px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const burgerLabels = {{ burger_labels| safe }};
+    const burgerCounts = {{ burger_counts| safe }};
+
+    const burgerCtx = document.getElementById('kelaslayanan').getContext('2d');
+    new Chart(burgerCtx, {
+        type: 'doughnut', // Pilih jenis grafik (misalnya, doughnut)
+        data: {
+            labels: burgerLabels,
+            datasets: [{
+                label: 'Pesanan per Menu Burger',
+                data: burgerCounts,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+
+    // Grafik Pelanggan
+    const pelangganLabels = {{ pelanggan_labels| safe }};
+    const pelangganCounts = {{ pelanggan_counts| safe }};
+
+    const pelangganCtx = document.getElementById('layanantambahan').getContext('2d');
+    new Chart(pelangganCtx, {
+        type: 'pie', // Pilih jenis grafik (misalnya, pie)
+        data: {
+            labels: pelangganLabels,
+            datasets: [{
+                label: 'Pesanan per Pelanggan',
+                data: pelangganCounts,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        }
+    });
+
+
+
+    // Ambil data dari Django context
+    const chartLabels = {{ labels| safe }};
+    const chartData = {{ data| safe }};
+
+
+    const ctx = document.getElementById('pemasukan').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar', // Ganti dengan jenis chart yang diinginkan
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Pemasukan',
+                data: chartData,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

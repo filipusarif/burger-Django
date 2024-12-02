@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Update pelanggan</h4>
+        <form method="POST" class="forms-sample">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputName1">Nama</label>
+                <input type="text" class="form-control" name="nama" value="{{ pelanggan.nama_pelanggan }}" id="exampleInputName1"
+                    placeholder="Masukkan Nama pelanggan">
+            </div>
+            <!-- <div class="mb-3">
+                <label for="pesanan" class="form-label">Pesanan</label>
+                <select id="pesanan" name="pesanan" class="form-select" multiple>
+                    {% for burger in burgers %}
+                        <option value="{{ burger.id }}" {% if burger.id in selected_burgers %}selected{% endif %}>{{ burger.nama }}</option>
+                    {% endfor %}
+                </select>
+            </div> -->
+            <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+            <a href="{% url 'pelanggan' %}" class="btn btn-light" onclick="confirmCancel()">Cancel</a>
+        </form>
+    </div>
+</div>
+<script>
+    function confirmCancel() {
+        return confirm("Are you sure you want to cancel? Your changes will be lost! Take a moment to review your updates.");
+    }
+</script>
+{% endblock %}
